@@ -4,3 +4,4 @@ Projects covering backend concepts of ALX/Holberton School Backend Specializatio
 ## Project List
 
 1. [0x00-pagination](0x00-pagination) - Pagination
+2. [0x01-caching](0x01-caching) - Caching
