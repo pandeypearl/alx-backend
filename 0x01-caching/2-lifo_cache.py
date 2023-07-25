@@ -18,7 +18,7 @@ class LIFOCache(BaseCaching):
         """ Assigns to dictionary self.cache_data
         the item value for the key key """
         if key and item:
-            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+            if len(self.cache_data) >= self.MAX_ITEMS:
                 if key in self.cache_data:
                     del self.cache_data[key]
                     self.key_indexes.remove(key)
