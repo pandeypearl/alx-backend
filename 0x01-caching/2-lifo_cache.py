@@ -27,8 +27,8 @@ class LIFOCache(BaseCaching):
                     item_discarded = self.key_indexes.pop(self.MAX_ITEMS - 1)
                     print("DISCARD:", item_discarded)
 
-        self.cache_data[key] = item
-        self.key_indexes.append(key)
+            self.cache_data[key] = item
+            self.key_indexes.append(key)
 
     def get(self, key):
         """ Must return value in
