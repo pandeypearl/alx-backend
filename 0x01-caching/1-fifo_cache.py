@@ -1,22 +1,29 @@
 #!/usr/bin/env python3
-""" FIFO Caching """
-
+""" 
+FIFO Caching
+"""
 
 BaseCaching = __import__('base_caching').BaseCaching
 
 
 class FIFOCache(BaseCaching):
-    """ Inherits from BaseCaching and is a
-    caching system """
+    """
+    Inherits from BaseCaching and is a
+    caching system
+    """
 
     def __init__(self):
-        """ Init method """
+        """
+        Init method
+        """
         super().__init__()
         self.key_indexes = []
 
     def put(self, key, item):
-        """ Assigns to dictionary self.cache_data
-        the item value for the key key """
+        """
+        Assigns to dictionary self.cache_data
+        the item value for the key key
+        """
         if key and item:
             if key in self.cache_data:
                 self.cache_data[key] = item
@@ -31,8 +38,10 @@ class FIFOCache(BaseCaching):
         self.key_indexes.append(key)
 
     def get(self, key):
-        """ Must return value in
-        self.cache_data linked to key """
+        """
+        Must return value in
+        self.cache_data linked to key
+        """
         if key in self.cache_data:
             return self.cache_data[key]
         return None
