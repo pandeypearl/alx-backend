@@ -23,9 +23,8 @@ class LRUCache(BaseCaching):
             self.lru_order[key] = item
             self.lru_order.move_to_end(key)
             self.cache_data[key] = item
-            return
 
-        if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
             item_discarded = next(iter(self.lru_order))
             del self.cache_data[item_discarded]
             print("DISCARD:", item_discarded)
