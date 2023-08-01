@@ -2,9 +2,8 @@
 """ Basic Flask Application """
 
 from flask import Flask, render_template, request
-from flask_babel import Babel, _
+from flask_babel import Babel
 
-app = Flask(__name__)
 
 
 class Config(object):
@@ -14,18 +13,22 @@ class Config(object):
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
+# Instatiate application object
+app = Flask(__name__)
 app.config.from_object(Config)
+
+# Wrap applicatin with babel
 babel = Babel(app)
 
 
-@app.route('/')
-def hello_world():
+@app.route('/', strict_slashes=False)
+def hello_world() -> str:
     """ Render basic html file """
     return render_template('3-index.html')
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> str:
     """ Determines the best match with supported languages """
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
