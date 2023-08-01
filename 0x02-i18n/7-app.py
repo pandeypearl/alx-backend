@@ -2,10 +2,8 @@
 """ Basic Flask Application """
 
 from flask import Flask, render_template, request, g
-from flask_babel import Babel, _
+from flask_babel import Babel
 import pytz
-
-app = Flask(__name__)
 
 
 class Config(object):
@@ -15,8 +13,14 @@ class Config(object):
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
+# Instantiates applicatio object
+app = Flask(__name__)
 app.config.from_object(Config)
+
+# Wrap the application with Babel
 babel = Babel(app)
+
+
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
     2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
@@ -41,21 +45,12 @@ def get_user(id):
     return None
 
 
-@app.route('/')
-def hello_world():
-    """ Render basic html file """
-    login = False
-    if g.get('user') is not None:
-        login = True
-    return render_template('7-index.html', login=login)
-
-
 @babel.localeselector
 def get_locale():
     """ Determines the best match with supported laguages """
-    lang = request.args.get('locale')
-    if lang in app.config['LANGUAGES']:
-        return lang
+    locale = request.args.get('locale')
+    if locale in app.config['LANGUAGES']:
+        return locale
     if (g.get('user') and g.user.get("locale", None)
             and g.user["locale"] in app.config['LANGUAGES']):
         return g.user["locale"]
@@ -63,7 +58,7 @@ def get_locale():
 
 
 @babel.timezoneselector
-def get_timezone() -> str:
+def get_timezone():
     """ Returns the time in timezone """
     try:
         if request.args.get('timezone'):
@@ -73,6 +68,15 @@ def get_timezone() -> str:
     except pytz.exceptions.UnknownTimeZoneError:
         pass
     return app.config['BABEL_DEFAULT_TIMEZONE']
+
+
+@app.route('/', strict_slashes=False)
+def hello_world() -> str:
+    """ Render basic html file """
+    login = False
+    if g.get('user') is not None:
+        login = True
+    return render_template('7-index.html', login=login)
 
 
 if __name__ == '__main__':
