@@ -2,9 +2,7 @@
 """ Basic Flask Application """
 
 from flask import Flask, render_template, request, g
-from flask_babel import Babel, _
-
-app = Flask(__name__)
+from flask_babel import Babel
 
 
 class Config(object):
