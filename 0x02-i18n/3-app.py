@@ -16,7 +16,7 @@ class Config(object):
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# Wrap applicatin with babel
+# Wrap application with babel
 babel = Babel(app)
 
 
