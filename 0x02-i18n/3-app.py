@@ -20,16 +20,16 @@ app.config.from_object(Config)
 babel = Babel(app)
 
 
-@app.route('/', strict_slashes=False)
-def hello_world() -> str:
-    """ Render basic html file """
-    return render_template('3-index.html')
-
-
 @babel.localeselector
 def get_locale() -> str:
     """ Determines the best match with supported languages """
     return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+@app.route('/', strict_slashes=False)
+def hello_world() -> str:
+    """ Render basic html file """
+    return render_template('3-index.html')
 
 
 if __name__ == '__main__':
