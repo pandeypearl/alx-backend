@@ -2,9 +2,7 @@
 """ Basic Flask Application """
 
 from flask import Flask, render_template, request, g
-from flask_babel import Babel, _
-
-app = Flask(__name__)
+from flask_babel import Babel
 
 
 class Config(object):
@@ -14,8 +12,14 @@ class Config(object):
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
+# Instantiate application object
+app = Flask(__name__)
 app.config.from_object(Config)
+
+# Wrap application with Babel
 babel = Babel(app)
+
+
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
     2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
@@ -40,25 +44,25 @@ def get_user(id):
     return None
 
 
-@app.route('/')
-def hello_world():
+@babel.localeselector
+def get_locale():
+    """ Determines the best match with supported laguages """
+    locale = request.args.get('locale')
+    if locale in app.config['LANGUAGES']:
+        return locale
+    if (g.get('user') and g.user.get("locale", None)
+            and g.user["locale"] in app.config['LANGUAGES']):
+        return g.user["locale"]
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+@app.route('/', strict_slashes=False)
+def hello_world() -> str:
     """ Render basic html file """
     login = False
     if g.get('user') is not None:
         login = True
     return render_template('6-index.html', login=login)
-
-
-@babel.localeselector
-def get_locale():
-    """ Determines the best match with supported laguages """
-    lang = request.args.get('locale')
-    if lang in app.config['LANGUAGES']:
-        return lang
-    if (g.get('user') and g.user.get("locale", None)
-            and g.user["locale"] in app.config['LANGUAGES']):
-        return g.user["locale"]
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 if __name__ == '__main__':
