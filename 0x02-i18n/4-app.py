@@ -27,8 +27,8 @@ def hello_world():
 @babel.localeselector
 def get_locale():
     """ Determines the best match with supported laguages """
-    if request.full_path.split('/')[1][8] == "?locale=":
-        lang = request.full_path.split('/')[1][8]
+    if request.full_path.split('/')[1][:8] == "?locale=":
+        lang = request.full_path.split('/')[1][8:]
         if lang in all.config['LANGUAGES']:
             return lang
     return request.accept_languages.best_match(app.config['LANGUAGES'])
