@@ -1,14 +1,15 @@
-// Node Redis Client
-import * as redis from 'redis';
+#!/usr/bin/node
+/**
+ * Connecting to redis server via redis client
+ */
+import { createClient } from 'redis';
 
-const client = redis.createClient();
+const client = createClient();
 
-// event handler for successful connection
-client.on('connect', () => {
-    console.log('Redis client connected to the server');
+client.on('error', (err) => {
+    console.log('Redis client not connected to the server:', err.toString());
 });
 
-// event handler for connection errors
-client.on('error', (err) => {
-    console.log(`Redis client not connected to the server: ${err.message}`)
+client.on('connect', () => {
+    console.log('Redis client connected to the server');
 });
